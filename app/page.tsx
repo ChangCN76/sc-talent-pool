@@ -17,7 +17,7 @@ export default function Home() {
           <p className="font-semibold text-white">Security status</p>
           <ul className="mt-3 space-y-2">
             <li>• Public homepage does not expose applicant data.</li>
-            <li>• Candidate dashboard is protected by Supabase administrator authentication.</li>
+            <li>• Candidate workflow is preserved inside the protected /admin dashboard.</li>
             <li>• Gmail connection will use Google OAuth only; no mailbox password is requested or stored.</li>
           </ul>
         </div>

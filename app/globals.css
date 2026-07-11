@@ -1,1 +1,82 @@
 @import "tailwindcss";
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  background: #020617;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+.field {
+  width: 100%;
+  border-radius: 1rem;
+  border: 1px solid rgb(255 255 255 / 0.12);
+  background: rgb(15 23 42 / 0.9);
+  padding: 0.85rem 1rem;
+  color: white;
+  outline: none;
+}
+
+.field:focus {
+  border-color: rgb(103 232 249 / 0.8);
+  box-shadow: 0 0 0 4px rgb(103 232 249 / 0.12);
+}
+
+.field::placeholder {
+  color: rgb(148 163 184);
+}
+
+.field option {
+  color: #0f172a;
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  border-radius: 1rem;
+  border: 1px solid rgb(255 255 255 / 0.1);
+  background: rgb(15 23 42 / 0.65);
+  padding: 0.85rem 1rem;
+}
+
+.primary,
+.secondary,
+.danger {
+  border-radius: 999px;
+  padding: 0.85rem 1.1rem;
+  font-weight: 700;
+  transition: transform 150ms ease, opacity 150ms ease, border-color 150ms ease;
+}
+
+.primary:hover,
+.secondary:hover,
+.danger:hover {
+  transform: translateY(-1px);
+}
+
+.primary {
+  background: linear-gradient(135deg, #22d3ee, #a78bfa);
+  color: #020617;
+}
+
+.secondary {
+  border: 1px solid rgb(255 255 255 / 0.14);
+  background: rgb(255 255 255 / 0.08);
+  color: white;
+}
+
+.danger {
+  border: 1px solid rgb(248 113 113 / 0.45);
+  background: rgb(248 113 113 / 0.12);
+  color: rgb(254 202 202);
+}

@@ -1,16 +1,29 @@
 "use client";
 
 import Link from "next/link";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 
 const ADMIN_EMAIL = "sc.climbadm@gmail.com";
+
+const loginErrors: Record<string, string> = {
+  "missing-code": "The login link is missing its authorization code. Please request a new secure login link.",
+  "session-exchange-failed": "We could not finish signing you in. The link may have expired; please request a new secure login link.",
+  "not-authorized": "This account is not authorized for the Studio Climb admin workspace.",
+};
 
 export default function LoginPage() {
   const [email, setEmail] = useState(ADMIN_EMAIL);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const supabase = createClient();
+
+  useEffect(() => {
+    const errorCode = new URLSearchParams(window.location.search).get("error");
+    if (errorCode) {
+      setMessage(loginErrors[errorCode] ?? "We could not finish signing you in. Please request a new secure login link.");
+    }
+  }, []);
 
   async function sendMagicLink(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -26,7 +39,7 @@ export default function LoginPage() {
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        emailRedirectTo: `${window.location.origin}/admin`,
+        emailRedirectTo: `${window.location.origin}/auth/callback?next=/admin`,
       },
     });
 

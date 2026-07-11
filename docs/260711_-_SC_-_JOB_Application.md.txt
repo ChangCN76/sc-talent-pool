@@ -1,0 +1,107 @@
+Job Application Email Management App
+Project Overview
+Our company receives all job applications through one recruitment email account, which is currently managed by an administrator.
+The purpose of this app is to help organise and manage job application emails more efficiently.
+The app does not need to replace the email account. Instead, it should work with the existing inbox and help the administrator automatically organise emails, send standard replies, track responses, and manage the next action required.
+Current Process
+At the moment, the administrator handles the process manually:
+Receive a job application by email.
+Read the email and identify the position applied for.
+Move the email into the relevant folder.
+Send an initial acknowledgement email.
+Wait for any additional information or reply from the applicant.
+Track the applicant’s reply.
+Send the application to the relevant team members for review.
+Send one of several standard follow-up emails.
+Move the email into another folder based on its latest status.
+This process works, but it requires a lot of manual email management.
+Proposed App
+The app should connect to the recruitment email account and help manage the entire email workflow from one dashboard.
+Main Features
+1. Organise Incoming Applications
+When a new application email is received, the app should:
+Identify the applicant’s name
+Identify the position applied for
+Identify whether a resume or portfolio is attached
+Categorise the application
+Place or label the email under the correct job position or folder
+Example folders:
+Animation
+Design
+Illustration
+Story and Writing
+Production
+AI Creative
+Marketing and Content
+Position Not Clear
+2. Send an Automatic First Reply
+After receiving the application, the app should automatically send a standard acknowledgement email.
+For example:
+Application received
+Thank you for applying
+We will review your application
+We may contact you if additional information is required
+The app should record that the first reply has already been sent.
+3. Track Applicant Replies
+If the applicant replies, the app should:
+Match the reply to the original application
+Keep the full email conversation together
+Show that a new reply has been received
+Update the application status
+Notify the administrator that action may be required
+4. Team Review
+The administrator should be able to assign or share the application with the relevant team members for review.
+The team should be able to:
+View the applicant’s email
+View the resume and portfolio
+Add internal comments
+Recommend the next action
+Possible review decisions:
+Proceed
+Request more information
+Keep for future consideration
+Reject
+Invite for interview
+5. Standard Email Replies
+The app should provide several prepared email templates.
+Examples:
+Request for portfolio
+Request for additional information
+Interview invitation
+Application under review
+Not selected
+Keep in database for future opportunities
+Follow-up email
+The administrator can select a template, edit it if necessary, and send it directly from the app.
+6. Email and Folder Status
+After an email is sent, the system should update the applicant’s status and organise the email accordingly.
+Suggested statuses:
+New Application
+First Reply Sent
+Waiting for Applicant Reply
+Applicant Replied
+Waiting for Team Review
+Additional Information Requested
+Interview
+Rejected
+Keep for Future
+Closed
+7. Dashboard
+The dashboard should clearly show:
+New applications
+Applications that have not received a first reply
+Applicants waiting for a response
+New replies received
+Applications waiting for team review
+Interviews
+Rejected applications
+Closed cases
+Main Objective
+The objective is to reduce the administrator’s manual email work.
+The app should make sure that:
+Every application is organised
+Every applicant receives the correct first reply
+Applicant replies are not missed
+The team knows which applications need review
+Standard replies can be sent quickly
+Every email is placed under the correct status

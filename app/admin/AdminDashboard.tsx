@@ -40,6 +40,14 @@ export default function AdminDashboard() {
   const [selectedTemplate, setSelectedTemplate] = useState<string>(templates[0].id);
   const [notice, setNotice] = useState("");
   const [loading, setLoading] = useState(true);
+  const [googleStatus, setGoogleStatus] = useState<{
+    connected: boolean;
+    email: string | null;
+    scopes: string[];
+    expiresAt: string | null;
+    updatedAt: string | null;
+  }>({ connected: false, email: null, scopes: [], expiresAt: null, updatedAt: null });
+  const [googleLoading, setGoogleLoading] = useState(true);
 
   const selected = applications.find((application) => application.id === selectedId) ?? applications[0];
   const currentYear = new Date().getFullYear();
@@ -62,7 +70,43 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     void loadApplications();
+    void loadGoogleStatus();
   }, []);
+
+  async function loadGoogleStatus() {
+    setGoogleLoading(true);
+    try {
+      const response = await fetch("/api/google/status", { cache: "no-store" });
+      const data = await response.json();
+      if (!response.ok) {
+        setNotice(data.error || "Could not load Google Workspace status.");
+        return;
+      }
+      setGoogleStatus(data);
+    } catch {
+      setNotice("Could not load Google Workspace status.");
+    } finally {
+      setGoogleLoading(false);
+    }
+  }
+
+  async function disconnectGoogleWorkspace() {
+    setGoogleLoading(true);
+    try {
+      const response = await fetch("/api/google/disconnect", { method: "POST" });
+      const data = await response.json();
+      if (!response.ok) {
+        setNotice(data.error || "Could not disconnect Google Workspace.");
+        return;
+      }
+      setGoogleStatus({ connected: false, email: null, scopes: [], expiresAt: null, updatedAt: null });
+      setNotice("Google Workspace disconnected and stored OAuth tokens removed.");
+    } catch {
+      setNotice("Could not disconnect Google Workspace.");
+    } finally {
+      setGoogleLoading(false);
+    }
+  }
 
   async function loadApplications() {
     setLoading(true);
@@ -177,6 +221,33 @@ export default function AdminDashboard() {
       </header>
 
       {notice && <div className="rounded-2xl border border-amber-300/30 bg-amber-300/10 p-4 text-amber-100">{notice}</div>}
+
+      <section className="rounded-3xl border border-white/10 bg-white/5 p-5">
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <p className="text-sm font-semibold uppercase tracking-[0.25em] text-cyan-300">Admin-only setup</p>
+            <h2 className="mt-2 text-2xl font-semibold">Google Workspace Connection</h2>
+            <p className="mt-2 text-sm text-slate-400">
+              OAuth tokens are exchanged, encrypted, refreshed, and revoked only by server routes. Gmail, Calendar, and Sheets automation is not enabled in this sprint.
+            </p>
+            <div className="mt-4 flex flex-wrap gap-2 text-sm">
+              <span className={`rounded-full px-3 py-1 ${googleStatus.connected ? "bg-emerald-400/15 text-emerald-200" : "bg-rose-400/15 text-rose-200"}`}>
+                {googleLoading ? "Checking..." : googleStatus.connected ? "Connected" : "Disconnected"}
+              </span>
+              {googleStatus.email && <span className="rounded-full bg-white/10 px-3 py-1 text-slate-200">{googleStatus.email}</span>}
+              {googleStatus.expiresAt && <span className="rounded-full bg-white/10 px-3 py-1 text-slate-300">Access expires {new Date(googleStatus.expiresAt).toLocaleString()}</span>}
+            </div>
+          </div>
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <button className="secondary" onClick={loadGoogleStatus} disabled={googleLoading}>Refresh status</button>
+            {googleStatus.connected ? (
+              <button className="danger" onClick={disconnectGoogleWorkspace} disabled={googleLoading}>Disconnect Google Workspace</button>
+            ) : (
+              <a className="primary text-center" href="/api/google/connect">Connect Google Workspace</a>
+            )}
+          </div>
+        </div>
+      </section>
 
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
         {[

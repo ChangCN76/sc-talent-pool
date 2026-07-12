@@ -44,13 +44,20 @@ export async function GET(request: NextRequest) {
     return redirectToAdmin(request, { google: "error", reason: "invalid-state" });
   }
 
+  let failureStage: "token-exchange" | "userinfo-verification" | "allowed-email-check" | "database-store" =
+    "token-exchange";
+
   try {
     const tokens = await exchangeCodeForTokens(code);
+    failureStage = "userinfo-verification";
     const email = await getGoogleAccountEmail(tokens.access_token!);
+    failureStage = "allowed-email-check";
     assertAllowedGoogleEmail(email);
+    failureStage = "database-store";
     await upsertGoogleConnection({ providerAccountEmail: email, tokens });
     return redirectToAdmin(request, { google: "connected" });
   } catch {
+    console.error("Google OAuth callback failed", { stage: failureStage });
     return redirectToAdmin(request, { google: "error", reason: "connection-failed" });
   }
 }
